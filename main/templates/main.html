@@ -1,9 +1,35 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>test</title>
-</head>
-<body>
-It works!
-</body>
+  <head>
+    <title>SC - ISin</title>
+  </head>
+  <body onload="documentLoaded()">
+    <input id="duration" type="input" />
+    <button id="submit" />
+    <script type="text/javascript">
+      const documentLoaded = () => {
+        const submitElement = document.getElementById("submit");
+
+        submitElement.onclick = submit;
+      }
+
+      const submit = () => {
+        const duration = document.getElementById('duration').value;
+
+        return fetch('/get_result', {
+          method: "POST",
+          mode: "cors",
+          cache: "no-cache",
+          credentials: "same-origin",
+          headers: {
+            "Content-Type": "application/json; charset=utf-8",
+          },
+          redirect: "follow",
+          referrer: "no-referrer",
+          body: JSON.stringify({duration}),
+        })
+        .then(response => console.log(response));
+      }
+    </script>
+  </body>
 </html>
