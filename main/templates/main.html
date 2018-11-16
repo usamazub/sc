@@ -24,10 +24,10 @@
         <h1>ISin</h1>
       </div>
 
-      <form>
+      <form id="form" onsubmit="submit">
         <div class="form-group">
           <label>Durasi pengeringan</label>
-          <select class="form-control" id="durasi">
+          <select class="form-control" id="duration">
             <option>1</option>
             <option>2</option>
             <option>3</option>
@@ -42,6 +42,13 @@
           Submit
         </button>
       </form>
+
+      <div id="loading">
+        <div class="spinner">
+          <div class="double-bounce1"></div>
+          <div class="double-bounce2"></div>
+        </div>
+      </div>
     </div>
 
     <style>
@@ -91,19 +98,86 @@
           font-size: 3rem;
         }
       }
+
+      .spinner {
+        width: 40px;
+        height: 40px;
+
+        position: relative;
+        margin: 53.5px auto;
+      }
+
+      .double-bounce1,
+      .double-bounce2 {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background-color: #333;
+        opacity: 0.6;
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        -webkit-animation: sk-bounce 2s infinite ease-in-out;
+        animation: sk-bounce 2s infinite ease-in-out;
+      }
+
+      .double-bounce2 {
+        -webkit-animation-delay: -1s;
+        animation-delay: -1s;
+      }
+
+      @-webkit-keyframes sk-bounce {
+        0%,
+        100% {
+          -webkit-transform: scale(0);
+        }
+        50% {
+          -webkit-transform: scale(1);
+        }
+      }
+
+      @keyframes sk-bounce {
+        0%,
+        100% {
+          transform: scale(0);
+          -webkit-transform: scale(0);
+        }
+        50% {
+          transform: scale(1);
+          -webkit-transform: scale(1);
+        }
+      }
     </style>
 
     <script type="text/javascript">
-      const documentLoaded = () => {
-        const submitElement = document.getElementById("submit");
+      let isLoading = false;
 
-        submitElement.onclick = submit;
+      const setVisibility = (elem, visibility) => {
+        elem.style.display = visibility ? "" : "none";
       };
 
-      const submit = () => {
-        const duration = document.getElementById("duration").value;
+      const documentLoaded = () => {
+        const submitElement = document.getElementById("submit");
+        setVisibility(document.getElementById("loading"), false);
+        document.getElementById("form").onsubmit = submit;
+      };
 
-        return fetch("/get_result", {
+      const setLoading = status => {
+        if (status) {
+          setVisibility(document.getElementById("form"), false);
+          setVisibility(document.getElementById("loading"), true);
+        } else {
+          setVisibility(document.getElementById("form"), true);
+          setVisibility(document.getElementById("loading"), false);
+        }
+      };
+
+      const submit = e => {
+        e.preventDefault();
+        const duration = document.getElementById("duration").value;
+        setLoading(true);
+        fetch("/get_result", {
           method: "POST",
           mode: "cors",
           cache: "no-cache",
@@ -114,7 +188,14 @@
           redirect: "follow",
           referrer: "no-referrer",
           body: JSON.stringify({ duration })
-        }).then(response => console.log(response));
+        }).then(
+          response => {
+            setTimeout(() => setLoading(false), 1000);
+          },
+          error => {
+            setTimeout(() => setLoading(false), 1000);
+          }
+        );
       };
     </script>
   </body>
