@@ -1,35 +1,121 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title></title>
+    <meta name="description" content="" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
     <title>SC - ISin</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+      integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+      crossorigin="anonymous"
+    />
   </head>
   <body onload="documentLoaded()">
-    <input id="duration" type="input" />
-    <button id="submit" />
+    <div class="container">
+      <div class="header">
+        <img src="https://image.flaticon.com/icons/png/512/1249/1249001.png" />
+        <h1>ISin</h1>
+      </div>
+
+      <form>
+        <div class="form-group">
+          <label>Durasi pengeringan</label>
+          <select class="form-control" id="durasi">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+          </select>
+          <small class="form-text text-muted">
+            Pilih durasi dalam jumlah hari
+          </small>
+        </div>
+        <button id="submit" type="submit" class="btn btn-primary">
+          Submit
+        </button>
+      </form>
+    </div>
+
+    <style>
+      .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .container > form {
+        width: 50%;
+      }
+
+      .header {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 100px;
+      }
+
+      .header > img {
+        height: 20%;
+        width: 20%;
+      }
+
+      .header > h1 {
+        display: block;
+        font-size: 5rem;
+        margin: 0;
+        margin-left: 12px;
+      }
+
+      @media only screen and (max-width: 500px) {
+        .container > form {
+          width: 90%;
+        }
+
+        .header > img {
+          height: 30%;
+          width: 30%;
+        }
+
+        .header > h1 {
+          font-size: 3rem;
+        }
+      }
+    </style>
+
     <script type="text/javascript">
       const documentLoaded = () => {
         const submitElement = document.getElementById("submit");
 
         submitElement.onclick = submit;
-      }
+      };
 
       const submit = () => {
-        const duration = document.getElementById('duration').value;
+        const duration = document.getElementById("duration").value;
 
-        return fetch('/get_result', {
+        return fetch("/get_result", {
           method: "POST",
           mode: "cors",
           cache: "no-cache",
           credentials: "same-origin",
           headers: {
-            "Content-Type": "application/json; charset=utf-8",
+            "Content-Type": "application/json; charset=utf-8"
           },
           redirect: "follow",
           referrer: "no-referrer",
-          body: JSON.stringify({duration}),
-        })
-        .then(response => console.log(response));
-      }
+          body: JSON.stringify({ duration })
+        }).then(response => console.log(response));
+      };
     </script>
   </body>
 </html>
