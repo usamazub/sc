@@ -142,51 +142,51 @@ def get_result(duration):
         temp = date + timezone.timedelta(days=inc)
 
         min_temp = [
-            min_temp[0] + check_val(temp, Tipe.min_temp)[0],
-            min_temp[1] + check_val(temp, Tipe.min_temp)[1]
+            min_temp[0] + (duration - inc)*check_val(temp, Tipe.min_temp)[0],
+            min_temp[1] + (duration - inc)*check_val(temp, Tipe.min_temp)[1]
         ]
 
         max_temp = [
-            max_temp[0] + check_val(temp, Tipe.max_temp)[0],
-            max_temp[1] + check_val(temp, Tipe.max_temp)[1]
+            max_temp[0] + (duration - inc)*check_val(temp, Tipe.max_temp)[0],
+            max_temp[1] + (duration - inc)*check_val(temp, Tipe.max_temp)[1]
         ]
 
         avg_temp = [
-            avg_temp[0] + check_val(temp, Tipe.avg_temp)[0],
-            avg_temp[1] + check_val(temp, Tipe.avg_temp)[1]
+            avg_temp[0] + (duration - inc)*check_val(temp, Tipe.avg_temp)[0],
+            avg_temp[1] + (duration - inc)*check_val(temp, Tipe.avg_temp)[1]
         ]
 
         humidity = [
-            humidity[0] + check_val(temp, Tipe.humidity)[0],
-            humidity[1] + check_val(temp, Tipe.humidity)[1]
+            humidity[0] + (duration - inc)*check_val(temp, Tipe.humidity)[0],
+            humidity[1] + (duration - inc)*check_val(temp, Tipe.humidity)[1]
         ]
 
         precipitation = [
-            precipitation[0] + check_val(temp, Tipe.precipitation)[0],
-            precipitation[1] + check_val(temp, Tipe.precipitation)[1]
+            precipitation[0] + (duration - inc)*check_val(temp, Tipe.precipitation)[0],
+            precipitation[1] + (duration - inc)*check_val(temp, Tipe.precipitation)[1]
         ]
 
         radiation_time = [
-            radiation_time[0] + check_val(temp, Tipe.radiation_time)[0],
-            radiation_time[1] + check_val(temp, Tipe.radiation_time)[1]
+            radiation_time[0] + (duration - inc)*check_val(temp, Tipe.radiation_time)[0],
+            radiation_time[1] + (duration - inc)*check_val(temp, Tipe.radiation_time)[1]
         ]
 
         avg_wind_speed = [
-            avg_wind_speed[0] + check_val(temp, Tipe.avg_wind_speed)[0],
-            avg_wind_speed[1] + check_val(temp, Tipe.avg_wind_speed)[1]
+            avg_wind_speed[0] + (duration - inc)*check_val(temp, Tipe.avg_wind_speed)[0],
+            avg_wind_speed[1] + (duration - inc)*check_val(temp, Tipe.avg_wind_speed)[1]
         ]
 
         max_wind_speed = [
-            max_wind_speed[0] + check_val(temp, Tipe.max_wind_speed)[0],
-            max_wind_speed[1] + check_val(temp, Tipe.max_wind_speed)[1]
+            max_wind_speed[0] + (duration - inc)*check_val(temp, Tipe.max_wind_speed)[0],
+            max_wind_speed[1] + (duration - inc)*check_val(temp, Tipe.max_wind_speed)[1]
         ]
 
         wind_direction_at_max = [
-            wind_direction_at_max[0] + check_val(temp, Tipe.wind_direction_at_max)[0],
-            wind_direction_at_max[1] + check_val(temp, Tipe.wind_direction_at_max)[1]
+            wind_direction_at_max[0] + (duration - inc)*check_val(temp, Tipe.wind_direction_at_max)[0],
+            wind_direction_at_max[1] + (duration - inc)*check_val(temp, Tipe.wind_direction_at_max)[1]
         ]
 
-    return {}
+    return {'duration' : 'output disini'}
 
 def run(*args):
     print(get_result(2))
