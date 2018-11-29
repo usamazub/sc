@@ -224,7 +224,12 @@
         }).then(
           response => {
             response.json().then(data => {
-              setProbabilityResult(data.probability);
+              setProbabilityResult(
+                data.probabilities.reduce(
+                  (prev, cur) => Math.min(prev, cur),
+                  100
+                )
+              );
               setTimeout(() => switchContent("result"), 1000);
             });
           },
