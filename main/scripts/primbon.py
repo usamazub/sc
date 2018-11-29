@@ -25,6 +25,44 @@ def to_date(date, delta):
     return date + timezone.timedelta(days=delta)
 
 
+def get_data_in_range(duration_in_days):
+    start_date = timezone.localtime().now().date()
+    end_date = start_date + timezone.timedelta(days=duration_in_days)
+
+    result = []
+    now = start_date
+    while now <= end_date:
+        result.append(Data.objects.filter(date__month=now.month, date__day=now.day))
+        now += timezone.timedelta(days=1)
+
+    return result
+
+
+def get_probability(dataset, feature, range_start, range_end):
+    param = {feature + "__gte": range_start, feature + "__lte": range_end}
+    return dataset.filter(**param).count() / dataset.count()
+
+
+def compute_bayesian_network_probabilities(duration_in_days):
+    data = get_data_in_range(duration_in_days)
+    features = [
+        ["min_temp", 22, 1000],
+        ["max_temp", 26, 1000],
+        ["avg_temp", 26, 1000],
+        ["humidity", 0, 90],
+        ["precipitation", 0, 70],
+        ["radiation_time", 3, 1000],
+    ]
+
+    day_results = []
+    for item in data:
+        current = {}
+        for feature, range_start, range_end in features:
+            current[feature] = get_probability(item, feature, range_start, range_end)
+        day_results.append(current)
+    return day_results
+
+
 def get_data(date):
     ret = []
 
@@ -204,4 +242,5 @@ def get_result(duration):
 
 
 def run(*args):
-    print(get_result(2))
+    # print(get_result(2))
+    print(compute_bayesian_network_probabilities(5))
