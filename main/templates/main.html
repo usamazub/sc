@@ -43,11 +43,16 @@
         </button>
       </form>
 
-      <div id="loading">
+      <div id="loading" style="display:none">
         <div class="spinner">
           <div class="double-bounce1"></div>
           <div class="double-bounce2"></div>
         </div>
+      </div>
+
+      <div id="result" style="display: none">
+        <p>Peluang keberhasilan pengeringan:</p>
+        <h3 id="result-percentage">50%</h3>
       </div>
     </div>
 
@@ -84,8 +89,20 @@
         margin-left: 12px;
       }
 
+      #result {
+        width: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+
       @media only screen and (max-width: 500px) {
         .container > form {
+          width: 90%;
+        }
+
+        #result {
           width: 90%;
         }
 
@@ -157,26 +174,42 @@
         elem.style.display = visibility ? "" : "none";
       };
 
-      const documentLoaded = () => {
-        const submitElement = document.getElementById("submit");
-        setVisibility(document.getElementById("loading"), false);
-        document.getElementById("form").onsubmit = submit;
-      };
-
-      const setLoading = status => {
-        if (status) {
+      const switchContent = contentType => {
+        if (contentType === "loading") {
           setVisibility(document.getElementById("form"), false);
           setVisibility(document.getElementById("loading"), true);
-        } else {
+          setVisibility(document.getElementById("result"), false);
+        } else if (contentType === "form") {
           setVisibility(document.getElementById("form"), true);
           setVisibility(document.getElementById("loading"), false);
+          setVisibility(document.getElementById("result"), false);
+        } else if (contentType === "result") {
+          setVisibility(document.getElementById("form"), false);
+          setVisibility(document.getElementById("loading"), false);
+          setVisibility(document.getElementById("result"), true);
         }
+      };
+
+      const setProbabilityResult = probability => {
+        const elem = document.getElementById("result-percentage");
+        elem.textContent = `${Math.floor(probability * 100)}%`;
+        elem.style.color = probability < 0.5 ? "red" : "green";
+      };
+
+      const documentLoaded = () => {
+        const submitElement = document.getElementById("submit");
+        document.getElementById("form").onsubmit = submit;
+        switchContent("form");
       };
 
       const submit = e => {
         e.preventDefault();
-        const duration = document.getElementById("duration").value;
-        setLoading(true);
+
+        const duration = parseInt(
+          document.getElementById("duration").value,
+          10
+        );
+        switchContent("loading");
         fetch("/get_result", {
           method: "POST",
           mode: "cors",
@@ -190,10 +223,13 @@
           body: JSON.stringify({ duration })
         }).then(
           response => {
-            setTimeout(() => setLoading(false), 1000);
+            response.json().then(data => {
+              setProbabilityResult(data.probability);
+              setTimeout(() => switchContent("result"), 1000);
+            });
           },
           error => {
-            setTimeout(() => setLoading(false), 1000);
+            setTimeout(() => switchContent("error"), 1000);
           }
         );
       };

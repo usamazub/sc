@@ -16,4 +16,6 @@ class GreetingView(View):
 
     def post(self, request):
         request_body = json.loads(request.body)
-        return HttpResponse(json.dumps(get_result(request_body["duration"])))
+        return HttpResponse(
+            json.dumps({"probability": get_result(request_body["duration"])})
+        )
