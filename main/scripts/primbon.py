@@ -2,7 +2,6 @@ from django.utils import timezone
 from main.models import Data
 from enum import Enum
 
-
 class Tipe(Enum):
     min_temp = 1
     max_temp = 2
@@ -14,7 +13,6 @@ class Tipe(Enum):
     max_wind_speed = 8
     wind_direction_at_max = 9
 
-
 # kelembapan, curah hujan
 # lama penyinaran
 # kecepatan anginp
@@ -23,7 +21,6 @@ class Tipe(Enum):
 # arah angin saat kecepatan maksimum
 def to_date(date, delta):
     return date + timezone.timedelta(days=delta)
-
 
 def get_data_in_range(duration_in_days):
     start_date = timezone.localtime().now().date()
@@ -242,5 +239,14 @@ def get_result(duration):
 
 
 def run(*args):
+    total_data = Data.objects.all().count()
+    total_pos = len(Data.objects.all().filter(
+        min_temp__lt = 22, #min_temp__lt = 8888,
+        max_temp__lt = 26, #max_temp__lt = 8888,
+        radiation_time__gte = 3, radiation_time__lt = 8888,
+        avg_temp__gte = 26, avg_temp__lt = 8888
+    ))
+
+    print(total_pos/total_data)
     # print(get_result(2))
-    print(compute_bayesian_network_probabilities(5))
+    # print(compute_bayesian_network_probabilities(5))

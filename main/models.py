@@ -1,6 +1,5 @@
 from django.db import models
 
-
 class Data(models.Model):
     wmo_id = models.CharField(max_length=16)
     station = models.CharField(max_length=128)
