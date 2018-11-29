@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.views import View
 from django.http import HttpResponse
-from main.scripts.alt_primbon import get_result
+from main.scripts.primbon import get_result
 
 
 def main_page(request):

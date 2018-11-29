@@ -92,8 +92,8 @@ def get_sum_tot(date, tipe):
 def check_val(date, tipe):
     return get_sum_tot(date, tipe)
 
-
 def get_result(duration):
+    print("fuk")
     date = timezone.now() - timezone.timedelta(days=5 * 30)
 
     for day in range(0, duration):
@@ -154,9 +154,10 @@ def get_result(duration):
         if 0 <= precipitation_val <= 70:
             humidity_key += 1
 
-        yield temperature_table[temperature_key] * humidity_table[humidity_key]
+        print(temperature_table[temperature_key] * humidity_table[humidity_key])
+        # yield temperature_table[temperature_key] * humidity_table[humidity_key]
 
 
 def run(*args):
-    compute_bayesian_network_probabilities()
-    print(get_result(2))
+    get_result(5)
+    compute_bayesian_network_probabilities(timezone.now())
