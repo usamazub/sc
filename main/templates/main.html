@@ -192,7 +192,7 @@
 
       const setProbabilityResult = probability => {
         const elem = document.getElementById("result-percentage");
-        elem.textContent = `${Math.floor(probability * 100)}%`;
+        elem.textContent = `${Math.round(probability * 10000) / 100}%`;
         elem.style.color = probability < 0.5 ? "red" : "green";
       };
 
