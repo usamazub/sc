@@ -148,7 +148,7 @@ def get_humidity_probability(date):
     )]
 
 def get_result(duration):
-    now = timezone.now() - timezone.timedelta(days=5 * 30)
+    now = timezone.now()
 
     for day in range(0, duration):
         construct_bayesian_network_probabilities(to_date(now, day))
